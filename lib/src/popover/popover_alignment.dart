@@ -15,58 +15,57 @@ enum PopoverAlignment {
   bottomRight;
 
   Offset getContentOffset({
-    required Offset actionOffset,
     required Size actionSize,
     required Size contentSize,
   }) {
     return switch (this) {
       leftTop => Offset(
-          actionOffset.dx - contentSize.width,
-          actionOffset.dy,
+          -contentSize.width,
+          0,
         ),
       leftCenter => Offset(
-          actionOffset.dx - contentSize.width,
-          (actionOffset.dy + actionSize.height / 2) - contentSize.height / 2,
+          -contentSize.width,
+          (actionSize.height / 2) - contentSize.height / 2,
         ),
       leftBottom => Offset(
-          actionOffset.dx - contentSize.width,
-          actionOffset.dy - contentSize.height + actionSize.height,
+          -contentSize.width,
+          -contentSize.height + actionSize.height,
         ),
       topLeft => Offset(
-          actionOffset.dx,
-          actionOffset.dy - contentSize.height,
+          0,
+          -contentSize.height,
         ),
       topCenter => Offset(
-          (actionOffset.dx + actionSize.width / 2) - contentSize.width / 2,
-          actionOffset.dy - contentSize.height,
+          (actionSize.width / 2) - contentSize.width / 2,
+          -contentSize.height,
         ),
       topRight => Offset(
-          actionOffset.dx + actionSize.width - contentSize.width,
-          actionOffset.dy - contentSize.height,
+          actionSize.width - contentSize.width,
+          -contentSize.height,
         ),
       bottomLeft => Offset(
-          actionOffset.dx,
-          actionOffset.dy + actionSize.height,
+          0,
+          actionSize.height,
         ),
       bottomCenter => Offset(
-          (actionOffset.dx + actionSize.width / 2) - contentSize.width / 2,
-          actionOffset.dy + actionSize.height,
+          (actionSize.width / 2) - contentSize.width / 2,
+          actionSize.height,
         ),
       bottomRight => Offset(
-          actionOffset.dx + actionSize.width - contentSize.width,
-          actionOffset.dy + actionSize.height,
+          actionSize.width - contentSize.width,
+          actionSize.height,
         ),
       rightTop => Offset(
-          actionOffset.dx + actionSize.width,
-          actionOffset.dy,
+          actionSize.width,
+          0,
         ),
       rightCenter => Offset(
-          actionOffset.dx + actionSize.width,
-          (actionOffset.dy + actionSize.height / 2) - contentSize.height / 2,
+          actionSize.width,
+          (actionSize.height / 2) - contentSize.height / 2,
         ),
       rightBottom => Offset(
-          actionOffset.dx + actionSize.width,
-          actionOffset.dy - contentSize.height + actionSize.height,
+          actionSize.width,
+          -contentSize.height + actionSize.height,
         ),
     };
   }

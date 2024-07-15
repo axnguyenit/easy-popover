@@ -19,6 +19,8 @@ class Popover extends StatefulWidget {
   final BorderRadius borderRadius;
   final PopoverAlignment alignment;
   final PopoverTriggerType triggerType;
+  final bool applyActionWidth;
+  final bool scrollEnabled;
 
   const Popover(
     this.context, {
@@ -32,6 +34,8 @@ class Popover extends StatefulWidget {
     this.borderRadius = const BorderRadius.all(Radius.circular(8.0)),
     this.alignment = PopoverAlignment.bottomCenter,
     this.triggerType = PopoverTriggerType.click,
+    this.applyActionWidth = false,
+    this.scrollEnabled = false,
   });
 
   @override
@@ -39,9 +43,9 @@ class Popover extends StatefulWidget {
 }
 
 class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
+  final _layerLink = LayerLink();
   PopoverController? _popoverController;
   Size _actionSize = Size.zero;
-  Offset _actionOffset = Offset.zero;
   Offset _contentOffset = Offset.zero;
   late final OverlayEntry _popoverOverlayEntry;
   final _contentSizeListener = ValueNotifier<Size>(Size.zero);
@@ -92,14 +96,17 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
 
   PopoverController get _controller => widget.controller ?? _popoverController!;
 
+  double get _contentWidth =>
+      widget.applyActionWidth ? _actionSize.width : widget.contentWidth;
+
   void _configureConstraints() {
     final renderBox =
         _actionKey.currentContext!.findRenderObject() as RenderBox;
     _actionSize = renderBox.size;
-    _actionOffset = renderBox.localToGlobal(Offset.zero);
+    final actionOffset = renderBox.localToGlobal(Offset.zero);
     final size = MediaQuery.sizeOf(widget.context);
-    final leftSpacing = _actionOffset.dx;
-    final topSpacing = _actionOffset.dy;
+    final leftSpacing = actionOffset.dx;
+    final topSpacing = actionOffset.dy;
     final rightSpacing = size.width - leftSpacing - _actionSize.width;
     final bottomSpacing = size.height - topSpacing - _actionSize.height;
     final bestPopoverAlignment = widget.alignment.findBestPopoverPosition(
@@ -112,10 +119,9 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
 
     _scaleAlignment = bestPopoverAlignment.scaleAlignment;
     _contentOffset = bestPopoverAlignment.getContentOffset(
-      actionOffset: _actionOffset,
       actionSize: _actionSize,
       contentSize: Size(
-        widget.contentWidth,
+        _contentWidth,
         _contentSizeListener.value.height,
       ),
     );
@@ -126,7 +132,7 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
       builder: (context) {
         return Stack(
           children: [
-            if (widget.triggerType.clicked) ...[
+            if (widget.triggerType.clicked && !widget.scrollEnabled) ...[
               Positioned.fill(
                 child: Material(
                   color: Colors.transparent,
@@ -150,15 +156,18 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
               listenable: _contentSizeListener,
               builder: (context, child) {
                 return Positioned(
-                  left: _contentOffset.dx,
-                  top: _contentOffset.dy,
-                  width: widget.contentWidth,
-                  child: ScaleTransition(
-                    scale: _animation,
-                    alignment: _scaleAlignment,
-                    child: Opacity(
-                      opacity: _animation.value,
-                      child: child!,
+                  width: _contentWidth,
+                  child: CompositedTransformFollower(
+                    link: _layerLink,
+                    showWhenUnlinked: false,
+                    offset: Offset(_contentOffset.dx, _contentOffset.dy),
+                    child: ScaleTransition(
+                      scale: _animation,
+                      alignment: _scaleAlignment,
+                      child: Opacity(
+                        opacity: _animation.value,
+                        child: child!,
+                      ),
                     ),
                   ),
                 );
@@ -233,7 +242,10 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
           hoverColor: Colors.transparent,
           highlightColor: Colors.transparent,
           splashFactory: NoSplash.splashFactory,
-          child: widget.action,
+          child: CompositedTransformTarget(
+            link: _layerLink,
+            child: widget.action,
+          ),
         ),
       ),
     );
