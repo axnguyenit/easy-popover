@@ -1,0 +1,19 @@
+name: easy_popover
+description: "A Popover can be used to display some content on top of another."
+version: 0.0.1
+homepage: https://github.com/axnguyenit/easy_popover
+
+environment:
+  sdk: '>=3.4.3 <4.0.0'
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
