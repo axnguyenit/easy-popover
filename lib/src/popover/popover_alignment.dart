@@ -143,4 +143,21 @@ enum PopoverAlignment {
         return topRight;
     }
   }
+
+  Alignment get scaleAlignment {
+    return switch (this) {
+      leftTop => Alignment.topRight,
+      leftCenter => Alignment.centerRight,
+      leftBottom => Alignment.bottomRight,
+      topLeft => Alignment.bottomLeft,
+      topCenter => Alignment.bottomCenter,
+      topRight => Alignment.bottomRight,
+      rightTop => Alignment.topLeft,
+      rightCenter => Alignment.centerLeft,
+      rightBottom => Alignment.bottomLeft,
+      bottomLeft => Alignment.topLeft,
+      bottomCenter => Alignment.topCenter,
+      bottomRight => Alignment.topRight,
+    };
+  }
 }

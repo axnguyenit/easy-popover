@@ -38,7 +38,7 @@ class Popover extends StatefulWidget {
   State<Popover> createState() => _PopoverState();
 }
 
-class _PopoverState extends State<Popover> {
+class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
   PopoverController? _popoverController;
   Size _actionSize = Size.zero;
   Offset _actionOffset = Offset.zero;
@@ -46,6 +46,9 @@ class _PopoverState extends State<Popover> {
   late final OverlayEntry _popoverOverlayEntry;
   final _contentSizeListener = ValueNotifier<Size>(Size.zero);
   final _actionKey = LabeledGlobalKey('easy_popover_action_key');
+  late final Animation<double> _animation;
+  late final AnimationController _animationController;
+  Alignment _scaleAlignment = Alignment.topCenter;
 
   @override
   void initState() {
@@ -59,6 +62,7 @@ class _PopoverState extends State<Popover> {
         ..onOpen = _openPopover
         ..onClose = _closePopover;
     }
+    _initializeAnimation();
     super.initState();
   }
 
@@ -70,7 +74,20 @@ class _PopoverState extends State<Popover> {
     _popoverOverlayEntry.dispose();
     _contentSizeListener.dispose();
     _popoverController?.dispose();
+    _animationController.dispose();
     super.dispose();
+  }
+
+  void _initializeAnimation() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+      reverseDuration: const Duration(milliseconds: 200),
+    );
+
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      _animationController,
+    );
   }
 
   PopoverController get _controller => widget.controller ?? _popoverController!;
@@ -85,23 +102,23 @@ class _PopoverState extends State<Popover> {
     final topSpacing = _actionOffset.dy;
     final rightSpacing = size.width - leftSpacing - _actionSize.width;
     final bottomSpacing = size.height - topSpacing - _actionSize.height;
+    final bestPopoverAlignment = widget.alignment.findBestPopoverPosition(
+      contentSize: _contentSizeListener.value,
+      leftSpacing: leftSpacing,
+      topSpacing: topSpacing,
+      rightSpacing: rightSpacing,
+      bottomSpacing: bottomSpacing,
+    );
 
-    _contentOffset = widget.alignment
-        .findBestPopoverPosition(
-          contentSize: _contentSizeListener.value,
-          leftSpacing: leftSpacing,
-          topSpacing: topSpacing,
-          rightSpacing: rightSpacing,
-          bottomSpacing: bottomSpacing,
-        )
-        .getContentOffset(
-          actionOffset: _actionOffset,
-          actionSize: _actionSize,
-          contentSize: Size(
-            widget.contentWidth,
-            _contentSizeListener.value.height,
-          ),
-        );
+    _scaleAlignment = bestPopoverAlignment.scaleAlignment;
+    _contentOffset = bestPopoverAlignment.getContentOffset(
+      actionOffset: _actionOffset,
+      actionSize: _actionSize,
+      contentSize: Size(
+        widget.contentWidth,
+        _contentSizeListener.value.height,
+      ),
+    );
   }
 
   OverlayEntry _buildContentOverlayEntry() {
@@ -136,10 +153,13 @@ class _PopoverState extends State<Popover> {
                   left: _contentOffset.dx,
                   top: _contentOffset.dy,
                   width: widget.contentWidth,
-                  child: Opacity(
-                    opacity:
-                        _contentSizeListener.value.height == 0.0 ? 0.0 : 1.0,
-                    child: child!,
+                  child: ScaleTransition(
+                    scale: _animation,
+                    alignment: _scaleAlignment,
+                    child: Opacity(
+                      opacity: _animation.value,
+                      child: child!,
+                    ),
                   ),
                 );
               },
@@ -180,11 +200,16 @@ class _PopoverState extends State<Popover> {
     _configureConstraints();
 
     /// Should use Global Context
-    Overlay.of(widget.context).insert(_popoverOverlayEntry);
+    final overlayState = Overlay.of(widget.context);
+    _animationController.addListener(() {
+      overlayState.setState(() {});
+    });
+    overlayState.insert(_popoverOverlayEntry);
+    _animationController.forward();
   }
 
   void _closePopover() {
-    _popoverOverlayEntry.remove();
+    _animationController.reverse().whenComplete(_popoverOverlayEntry.remove);
   }
 
   @override
