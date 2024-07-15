@@ -159,4 +159,68 @@ enum PopoverAlignment {
       bottomRight => Alignment.topRight,
     };
   }
+
+  Alignment get arrowScaleAlignment {
+    return switch (this) {
+      leftTop || leftCenter || leftBottom => Alignment.centerLeft,
+      topLeft || topCenter || topRight => Alignment.topCenter,
+      rightTop || rightCenter || rightBottom => Alignment.centerRight,
+      bottomLeft || bottomCenter || bottomRight => Alignment.bottomCenter,
+    };
+  }
+
+  double get arrowAngle {
+    return switch (this) {
+      leftTop || leftCenter || leftBottom => 90.0,
+      topLeft || topCenter || topRight => 180.0,
+      rightTop || rightCenter || rightBottom => 270.0,
+      bottomLeft || bottomCenter || bottomRight => 0.0,
+    };
+  }
+
+  Offset getArrowOffset({
+    required Size actionSize,
+    required double arrowSize,
+  }) {
+    final actionWidth = actionSize.width;
+    final actionHeight = actionSize.height;
+    final arrowTriangleHeight = arrowSize * cos(45);
+    final actionCenteredDx = actionWidth / 2;
+    final actionCenteredDy = actionHeight / 2;
+
+    return switch (this) {
+      leftTop || leftCenter || leftBottom => Offset(
+          -arrowTriangleHeight,
+          actionCenteredDy - arrowTriangleHeight,
+        ),
+      topLeft => Offset(
+          arrowSize,
+          -arrowTriangleHeight,
+        ),
+      topCenter => Offset(
+          actionCenteredDx - arrowTriangleHeight,
+          -arrowTriangleHeight,
+        ),
+      topRight => Offset(
+          actionWidth - arrowSize * 2,
+          -arrowTriangleHeight,
+        ),
+      rightTop || rightCenter || rightBottom => Offset(
+          actionWidth - arrowTriangleHeight,
+          actionCenteredDy - arrowTriangleHeight,
+        ),
+      bottomLeft => Offset(
+          arrowSize,
+          actionHeight - arrowTriangleHeight,
+        ),
+      bottomCenter => Offset(
+          actionCenteredDx - arrowTriangleHeight,
+          actionHeight - arrowTriangleHeight,
+        ),
+      bottomRight => Offset(
+          actionWidth - arrowSize * 2,
+          actionHeight - arrowTriangleHeight,
+        ),
+    };
+  }
 }
