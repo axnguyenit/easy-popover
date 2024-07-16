@@ -101,6 +101,7 @@ class Popover extends StatefulWidget {
 }
 
 class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
+  late final OverlayState _overlayState;
   final _layerLink = LayerLink();
   PopoverController? _popoverController;
   Size _actionSize = Size.zero;
@@ -124,7 +125,12 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
         ..onClose = _closePopover;
     }
     _initializeAnimation();
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
     super.initState();
+  }
+
+  void _afterLayout(Duration _) {
+    _overlayState = Overlay.of(widget.context);
   }
 
   @override
@@ -136,6 +142,7 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
     _contentSizeListener.dispose();
     _popoverController?.dispose();
     _animationController.dispose();
+    _overlayState.dispose();
     super.dispose();
   }
 
@@ -297,18 +304,29 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
 
   void _openPopover() {
     _configureConstraints();
-
-    /// Should use Global Context
-    final overlayState = Overlay.of(widget.context);
     _animationController.addListener(() {
-      overlayState.setState(() {});
+      _overlayState.setState(() {});
     });
-    overlayState.insert(_popoverOverlayEntry);
+    _overlayState.insert(_popoverOverlayEntry);
     _animationController.forward();
   }
 
   void _closePopover() {
     _animationController.reverse().whenComplete(_popoverOverlayEntry.remove);
+  }
+
+  @override
+  void didUpdateWidget(covariant Popover oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget != oldWidget) {
+      if (_controller.opened) {
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) {
+            _overlayState.setState(() {});
+          },
+        );
+      }
+    }
   }
 
   @override
@@ -319,14 +337,16 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
           _controller.close();
         }
       },
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          key: _actionKey,
-          onTap: _controller.toggle,
-          child: CompositedTransformTarget(
-            link: _layerLink,
-            child: widget.action,
+      child: Material(
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            key: _actionKey,
+            onTap: _controller.toggle,
+            child: CompositedTransformTarget(
+              link: _layerLink,
+              child: widget.action,
+            ),
           ),
         ),
       ),

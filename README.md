@@ -35,6 +35,7 @@ The Popover package provides a customizable popover widget for Flutter applicati
 - [x] Configurable dimensions, border radius, box shadow, and background color.
 - [x] Animation for showing and hiding the popover.
 - [x] Overlay support for capturing taps outside the popover to close it.
+- [x] Allow full-screen scrolling capability when opening the popover.
 
 ## Installation
 
@@ -92,7 +93,7 @@ flutter pub get
 flutter run
 ```
 
-This will launch the example app demonstrating various uses of the Popover widget.
+This will launch the example app demonstrating various uses of the `Popover` widget.
 
 ## Contributing
 
