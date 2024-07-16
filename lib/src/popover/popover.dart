@@ -3,30 +3,77 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../measure_size/measure_size.dart';
+import 'rounded_triangle_painter.dart';
 
 part 'popover_alignment.dart';
 part 'popover_controller.dart';
-part 'popover_trigger_type.dart';
 
+/// A Popover can be used to display some content on top of another.
+/// A customizable popover widget that displays a content widget
+/// anchored to an action widget.
 class Popover extends StatefulWidget {
-  /// Should provide Global Context
+  /// The global context of the widget.
   final BuildContext context;
 
+  /// The controller that manages the popover's state (open/close).
+  /// If not provided, a default controller will be created.
   final PopoverController? controller;
-  final Widget action;
-  final Widget content;
-  final double contentWidth;
-  final Color? backgroundColor;
-  final List<BoxShadow>? boxShadow;
-  final BorderRadius borderRadius;
-  final PopoverAlignment alignment;
-  final PopoverTriggerType triggerType;
-  final bool applyActionWidth;
-  final bool scrollEnabled;
-  final double arrowSize;
-  final double arrowRadius;
-  final bool showArrow;
 
+  /// The widget that triggers the popover when tapped.
+  final Widget action;
+
+  /// The content to be displayed inside the popover.
+  final Widget content;
+
+  /// The width of the content widget inside the popover.
+  /// Default is 200.0.
+  final double contentWidth;
+
+  /// The background color of the popover.
+  /// If not provided, it defaults to the theme's card color.
+  final Color? backgroundColor;
+
+  /// The shadow effect applied to the popover.
+  /// If not provided, a default shadow will be used.
+  final List<BoxShadow>? boxShadow;
+
+  /// The border radius of the popover.
+  /// Default is a radius of 8.0 on all corners.
+  final BorderRadius borderRadius;
+
+  /// The alignment of the popover relative to the action widget.
+  /// Default is [PopoverAlignment.bottomCenter].
+  final PopoverAlignment alignment;
+
+  /// Whether to apply the action widget's width to the popover content.
+  /// Default is false.
+  final bool applyActionWidth;
+
+  /// Whether the popover content is scrollable.
+  /// Default is false.
+  final bool scrollEnabled;
+
+  /// The size of the arrow pointing to the action widget.
+  /// Default is 20.0.
+  final double arrowSize;
+
+  /// The radius of the arrow's corners.
+  /// Default is 2.0.
+  final double arrowRadius;
+
+  /// Whether to hide the arrow pointing to the action widget.
+  /// Default is false.
+  final bool hideArrow;
+
+  /// The spacing between the popover and the action widget.
+  /// Default is 0.0.
+  final double spacing;
+
+  /// The color of the overlay behind the popover.
+  /// If not provided, it defaults to transparent.
+  final Color? overlayColor;
+
+  /// Constructs a [Popover] widget.
   const Popover(
     this.context, {
     super.key,
@@ -38,13 +85,16 @@ class Popover extends StatefulWidget {
     this.boxShadow,
     this.borderRadius = const BorderRadius.all(Radius.circular(8.0)),
     this.alignment = PopoverAlignment.bottomCenter,
-    this.triggerType = PopoverTriggerType.click,
     this.applyActionWidth = false,
     this.scrollEnabled = false,
     this.arrowSize = 20.0,
     this.arrowRadius = 2.0,
-    this.showArrow = true,
-  });
+    this.hideArrow = false,
+    this.spacing = 0.0,
+    this.overlayColor,
+  })  : assert(spacing >= 0.0, 'spacing must be greater than or equal to 0.0'),
+        assert(
+            arrowSize >= 0.0, 'arrowSize must be greater than or equal to 0.0');
 
   @override
   State<Popover> createState() => _PopoverState();
@@ -130,21 +180,24 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
       builder: (context) {
         return Stack(
           children: [
-            if (widget.triggerType.clicked && !widget.scrollEnabled) ...[
+            if (!widget.scrollEnabled) ...[
               Positioned.fill(
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    splashFactory: NoSplash.splashFactory,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    overlayColor: const WidgetStatePropertyAll(
-                      Colors.transparent,
-                    ),
-                    onTap: _controller.toggle,
-                    child: SizedBox(
-                      width: MediaQuery.of(widget.context).size.width,
-                      height: MediaQuery.of(widget.context).size.height,
+                child: Opacity(
+                  opacity: _animation.value,
+                  child: Material(
+                    color: widget.overlayColor ?? Colors.transparent,
+                    child: InkWell(
+                      splashFactory: NoSplash.splashFactory,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      overlayColor: const WidgetStatePropertyAll(
+                        Colors.transparent,
+                      ),
+                      onTap: _controller.toggle,
+                      child: SizedBox(
+                        width: MediaQuery.of(widget.context).size.width,
+                        height: MediaQuery.of(widget.context).size.height,
+                      ),
                     ),
                   ),
                 ),
@@ -164,6 +217,7 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
                         _contentWidth,
                         _contentSizeListener.value.height,
                       ),
+                      spacing: widget.spacing,
                     ),
                     child: ScaleTransition(
                       scale: _animation,
@@ -203,7 +257,7 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
                 ),
               ),
             ),
-            if (widget.showArrow) ...[
+            if (!widget.hideArrow && widget.arrowSize > 0.0) ...[
               Positioned(
                 width: widget.arrowSize,
                 child: CompositedTransformFollower(
@@ -212,6 +266,7 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
                   offset: _popoverAlignment.getArrowOffset(
                     actionSize: _actionSize,
                     arrowSize: widget.arrowSize,
+                    spacing: widget.spacing,
                   ),
                   child: ScaleTransition(
                     scale: _animation,
@@ -264,19 +319,11 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
           _controller.close();
         }
       },
-      child: Material(
-        borderRadius: widget.borderRadius,
-        elevation: 0.0,
-        color: Colors.transparent,
-        child: InkWell(
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
           key: _actionKey,
-          onTap: widget.triggerType.clicked ? _controller.toggle : () {},
-          onHover:
-              widget.triggerType.hovered ? (_) => _controller.toggle() : null,
-          borderRadius: widget.borderRadius,
-          hoverColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          splashFactory: NoSplash.splashFactory,
+          onTap: _controller.toggle,
           child: CompositedTransformTarget(
             link: _layerLink,
             child: widget.action,
@@ -284,71 +331,5 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
         ),
       ),
     );
-  }
-}
-
-// isosceles right triangle
-class RoundedTrianglePainter extends CustomPainter {
-  final double radius;
-  final Color color;
-
-  RoundedTrianglePainter({
-    this.radius = 2.0,
-    required this.color,
-  });
-
-  ///           A
-  ///           △
-  ///          /▽\
-  ///         / ⎪ \
-  ///        /  ⎪  \
-  ///       /   ⎪   \
-  ///      /    ⎪    \
-  ///     /     ⎪     \
-  ///    /     ◻︎⎪◻︎     \
-  ///  B ‾‾‾‾‾‾‾‾‾‾‾‾‾‾ C
-  ///       hypotenuse
-  ///
-  @override
-  void paint(Canvas canvas, Size size) {
-    final hypotenuse = size.width;
-    final height = hypotenuse * cos(45);
-    final acuteAngles = atan(2 * height / hypotenuse);
-    final S = radius / cos(acuteAngles);
-    final L = radius * tan(acuteAngles);
-    final h = L * sin(acuteAngles);
-    final b = 2 * L * cos(acuteAngles);
-
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 1
-      ..style = PaintingStyle.fill;
-
-    final basePath = Path()
-      ..moveTo(hypotenuse / 2, height)
-      ..relativeLineTo(-hypotenuse / 2, 0)
-      ..relativeLineTo(hypotenuse - (hypotenuse / 2 + b / 2), -height + h)
-      ..relativeLineTo(b, 0)
-      ..lineTo(hypotenuse, height)
-      ..close;
-
-    final arcRect = Rect.fromCenter(
-      center: Offset(hypotenuse / 2, S),
-      width: 2 * radius,
-      height: 2 * radius,
-    );
-
-    final arcPath = Path()
-      ..addArc(arcRect, pi + acuteAngles, 2 * acuteAngles)
-      ..close;
-
-    final completePath = Path.combine(PathOperation.union, basePath, arcPath);
-
-    canvas.drawPath(completePath, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
   }
 }
