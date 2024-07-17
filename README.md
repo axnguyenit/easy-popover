@@ -22,10 +22,6 @@ The Popover package provides a customizable popover widget for Flutter applicati
 
 <div>
   <img align="center" src="https://res.cloudinary.com/doh079rou/image/upload/v1721206660/easy-popover/popover-example.png" alt="easy_popover" />
-  <video width="100%" height="480" controls>
-    <source src="https://res.cloudinary.com/doh079rou/video/upload/v1721206661/easy-popover/popover-demo.mov">
-    easy_popover
-  </video>
 </div>
 
 ## Table of Contents
