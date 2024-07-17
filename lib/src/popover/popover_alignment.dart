@@ -87,7 +87,7 @@ enum PopoverAlignment {
   /// - [leftSpacing]: The space available on the left side of widget action.
   /// - [topSpacing]: The space available on the top side of widget action.
   /// - [rightSpacing]: The space available on the right side of widget action.
-  /// - [bottomSpacing]: The space available on the bottom side of widget action.
+  /// - [bottomSpacing]: The space available on the bottom side of widget action
   ///
   /// Returns the best [PopoverAlignment] for the Popover.
   PopoverAlignment findBestPopoverPosition({
