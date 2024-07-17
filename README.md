@@ -4,7 +4,7 @@
   <a href="https://github.com/axnguyenit/easy-popover">
     <img align="center" src="https://img.shields.io/badge/platforms-iOS%20%7C%20macOS%20%7C%20Android%20%7C%20Linux%20%7C%20Windows%20%7C%20Web-green.svg" alt="Supported platforms" />
   </a>
-  <a href="https://img.shields.io/badge/License-MIT-green">
+  <a href="https://github.com/axnguyenit/easy-popover/blob/master/LICENSE">
     <img align="center" src="https://img.shields.io/badge/License-MIT-green" alt="MIT License">
   </a>
   <a href="https://github.com/axnguyenit/easy-popover/stargazers">
@@ -13,15 +13,25 @@
   <a href="https://pub.dev/packages/easy_popover">
     <img align="center" src="https://img.shields.io/pub/v/easy_popover.svg?" alt="pub version">
   </a>
-<p >
+  <a href="https://codecov.io/gh/axnguyenit/easy-popover" >
+    <img align="center" src="https://codecov.io/gh/axnguyenit/easy-popover/graph/badge.svg?token=1PYNNZDL89"/>
+  </a>
+</p>
 
 The Popover package provides a customizable popover widget for Flutter applications. It allows developers to display contextual content tied to a specific widget, with various alignment options, animations, and styles.
+
+<div>
+  <img align="center" src="https://res.cloudinary.com/doh079rou/image/upload/v1721206660/easy-popover/popover-example.png" alt="easy_popover" />
+  <video width="100%" height="480" controls>
+    <source src="https://res.cloudinary.com/doh079rou/video/upload/v1721206661/easy-popover/popover-demo.mov">
+    easy_popover
+  </video>
+</div>
 
 ## Table of Contents
 
 - [Features](#features)
 - [Installation](#installation)
-- [Usage](#usage)
 - [API Reference](#api-reference)
 - [Examples](#examples)
 - [Contributing](#contributing)
@@ -50,15 +60,6 @@ dependencies:
   easy_popover: ^1.0.0
 ```
 
-## Usage
-
-Here’s an example of how to use the `Popover` widget in your Flutter app:
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:easy_popover/easy_popover.dart';
-```
-
 ## API Reference
 
 - [Popover](https://github.com/axnguyenit/easy-popover/blob/master/lib/src/popover/popover.dart) - The main widget to display a popover.
@@ -67,7 +68,8 @@ import 'package:easy_popover/easy_popover.dart';
 
 ## Examples
 
-To run the example app included with this package:
+- See [Example](https://pub.dev/packages/easy_popover/example) for details
+- Or run the example app included with this package:
 
 1. Clone the repository from GitHub:
 
