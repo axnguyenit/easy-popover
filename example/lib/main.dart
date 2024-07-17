@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'popover_example_screen.dart';
+import 'home_screen.dart';
 
 void main() {
   runApp(const PopoverExampleApp());
@@ -23,7 +23,7 @@ class _PopoverExampleAppState extends State<PopoverExampleApp> {
         initialEntries: [
           OverlayEntry(
             builder: (context) {
-              return const PopoverExampleScreen();
+              return const HomeScreen();
             },
           ),
         ],
