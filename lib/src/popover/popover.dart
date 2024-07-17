@@ -130,7 +130,7 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
   }
 
   void _afterLayout(Duration _) {
-    _overlayState = Overlay.of(widget.context);
+    _overlayState = Overlay.of(widget.context, rootOverlay: true);
   }
 
   @override
@@ -142,7 +142,6 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
     _contentSizeListener.dispose();
     _popoverController?.dispose();
     _animationController.dispose();
-    _overlayState.dispose();
     super.dispose();
   }
 
@@ -322,6 +321,7 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
       if (_controller.opened) {
         WidgetsBinding.instance.addPostFrameCallback(
           (_) {
+            if (!_overlayState.mounted) return;
             _overlayState.setState(() {});
           },
         );
