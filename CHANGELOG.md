@@ -1,3 +1,8 @@
+## 0.0.4
+
+- Update `findBestPopoverPosition` on Small Devices
+- Update Docs
+
 ## 0.0.3
 
 - Update Documentations

@@ -49,13 +49,6 @@ The Popover package provides a customizable popover widget for Flutter applicati
 flutter pub add easy_popover
 ```
 
-Or add the following to your `pubspec.yaml` file:
-
-```yaml
-dependencies:
-  easy_popover: ^1.0.0
-```
-
 ## API Reference
 
 - [Popover](https://github.com/axnguyenit/easy-popover/blob/master/lib/src/popover/popover.dart) - The main widget to display a popover.
@@ -63,6 +56,27 @@ dependencies:
 - [PopoverAlignment](https://github.com/axnguyenit/easy-popover/blob/master/lib/src/popover/popover_alignment.dart) - Defines the alignment of the popover relative to the action widget.
 
 ## Examples
+
+**Note: Wrapping Your App with Overlay for `Popover` Widget**
+- To utilize the `Popover` widget in your Flutter application, it is essential to wrap your app with an `Overlay`. The `Overlay` widget allows the `Popover` widget to be inserted and displayed correctly on top of other widgets. Below is an example of how to wrap your app with an `Overlay`:
+```dart
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: 'Easy Popover Example',
+    home: Overlay(
+      initialEntries: [
+        OverlayEntry(
+          builder: (context) {
+            return const PopoverExampleScreen();
+          },
+        ),
+      ],
+    ),
+  );
+}
+```
 
 - See [Example](https://pub.dev/packages/easy_popover/example) for details
 - Or run the example app included with this package:
