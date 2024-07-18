@@ -50,7 +50,7 @@ class _PopoverExampleScreenState extends State<PopoverExampleScreen> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0).copyWith(bottom: 500.0),
+        padding: const EdgeInsets.all(16.0).copyWith(top: 100.0, bottom: 500.0),
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(
