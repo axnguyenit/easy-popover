@@ -18,14 +18,8 @@ class _PopoverExampleAppState extends State<PopoverExampleApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Easy Popover Example',
-      home: Overlay(
-        initialEntries: [
-          OverlayEntry(
-            builder: (context) {
-              return const PopoverExampleScreen();
-            },
-          ),
-        ],
+      home: PopoverOverlay(
+        builder: (context) => const PopoverExampleScreen(),
       ),
     );
   }
@@ -133,7 +127,7 @@ class BasicPopover extends StatelessWidget {
       child: Center(
         child: Popover(
           context,
-          contentWidth: 280,
+          contentWidth: 1000,
           action: const UnClickableButton(
             title: 'Open Popover',
           ),

@@ -1,3 +1,7 @@
+## 0.0.5
+- OverlayEntry packaging
+- Resolve content overflow
+
 ## 0.0.4
 
 - Update `findBestPopoverPosition` on Small Devices

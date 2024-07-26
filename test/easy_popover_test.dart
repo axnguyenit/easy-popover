@@ -7,24 +7,18 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Overlay(
-          initialEntries: [
-            OverlayEntry(
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Popover(
-                      context,
-                      action: const Text('Open Popover'),
-                      content: const Material(
-                        child: Text('Popover Content'),
-                      ),
-                    ),
-                  ),
-                );
-              },
+        home: PopoverOverlay(
+          builder: (context) => Scaffold(
+            body: Center(
+              child: Popover(
+                context,
+                action: const Text('Open Popover'),
+                content: const Material(
+                  child: Text('Popover Content'),
+                ),
+              ),
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -44,25 +38,21 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Overlay(
-          initialEntries: [
-            OverlayEntry(
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Popover(
-                      context,
-                      scrollEnabled: true,
-                      action: const Text('Open Popover'),
-                      content: const Material(
-                        child: Text('Popover Content'),
-                      ),
-                    ),
+        home: PopoverOverlay(
+          builder: (context) {
+            return Scaffold(
+              body: Center(
+                child: Popover(
+                  context,
+                  scrollEnabled: true,
+                  action: const Text('Open Popover'),
+                  content: const Material(
+                    child: Text('Popover Content'),
                   ),
-                );
-              },
-            ),
-          ],
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -77,25 +67,21 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Overlay(
-          initialEntries: [
-            OverlayEntry(
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Popover(
-                      context,
-                      arrowSize: 28,
-                      action: const Text('Open Popover'),
-                      content: const Material(
-                        child: Text('Popover Content'),
-                      ),
-                    ),
+        home: PopoverOverlay(
+          builder: (context) {
+            return Scaffold(
+              body: Center(
+                child: Popover(
+                  context,
+                  arrowSize: 28,
+                  action: const Text('Open Popover'),
+                  content: const Material(
+                    child: Text('Popover Content'),
                   ),
-                );
-              },
-            ),
-          ],
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -112,27 +98,23 @@ void main() {
   testWidgets('Popover alignment and appearance', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Overlay(
-          initialEntries: [
-            OverlayEntry(
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Popover(
-                      context,
-                      alignment: PopoverAlignment.topCenter,
-                      backgroundColor: Colors.blue,
-                      boxShadow: const [
-                        BoxShadow(color: Colors.black, blurRadius: 4.0)
-                      ],
-                      action: const Text('Open Popover'),
-                      content: const Text('Popover Content'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
+        home: PopoverOverlay(
+          builder: (context) {
+            return Scaffold(
+              body: Center(
+                child: Popover(
+                  context,
+                  alignment: PopoverAlignment.topCenter,
+                  backgroundColor: Colors.blue,
+                  boxShadow: const [
+                    BoxShadow(color: Colors.black, blurRadius: 4.0)
+                  ],
+                  action: const Text('Open Popover'),
+                  content: const Text('Popover Content'),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -152,23 +134,19 @@ void main() {
   testWidgets('Popover alignment top-left', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Overlay(
-          initialEntries: [
-            OverlayEntry(
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Popover(
-                      context,
-                      alignment: PopoverAlignment.topLeft,
-                      action: const Text('Open Popover'),
-                      content: const Text('Popover Content'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
+        home: PopoverOverlay(
+          builder: (context) {
+            return Scaffold(
+              body: Center(
+                child: Popover(
+                  context,
+                  alignment: PopoverAlignment.topLeft,
+                  action: const Text('Open Popover'),
+                  content: const Text('Popover Content'),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -185,23 +163,19 @@ void main() {
   testWidgets('Popover alignment top-right', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Overlay(
-          initialEntries: [
-            OverlayEntry(
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Popover(
-                      context,
-                      alignment: PopoverAlignment.topRight,
-                      action: const Text('Open Popover'),
-                      content: const Text('Popover Content'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
+        home: PopoverOverlay(
+          builder: (context) {
+            return Scaffold(
+              body: Center(
+                child: Popover(
+                  context,
+                  alignment: PopoverAlignment.topRight,
+                  action: const Text('Open Popover'),
+                  content: const Text('Popover Content'),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -218,23 +192,19 @@ void main() {
   testWidgets('Popover alignment bottom-left', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Overlay(
-          initialEntries: [
-            OverlayEntry(
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Popover(
-                      context,
-                      alignment: PopoverAlignment.bottomLeft,
-                      action: const Text('Open Popover'),
-                      content: const Text('Popover Content'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
+        home: PopoverOverlay(
+          builder: (context) {
+            return Scaffold(
+              body: Center(
+                child: Popover(
+                  context,
+                  alignment: PopoverAlignment.bottomLeft,
+                  action: const Text('Open Popover'),
+                  content: const Text('Popover Content'),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -251,23 +221,19 @@ void main() {
   testWidgets('Popover alignment bottom-right', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Overlay(
-          initialEntries: [
-            OverlayEntry(
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Popover(
-                      context,
-                      alignment: PopoverAlignment.bottomRight,
-                      action: const Text('Open Popover'),
-                      content: const Text('Popover Content'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
+        home: PopoverOverlay(
+          builder: (context) {
+            return Scaffold(
+              body: Center(
+                child: Popover(
+                  context,
+                  alignment: PopoverAlignment.bottomRight,
+                  action: const Text('Open Popover'),
+                  content: const Text('Popover Content'),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -284,23 +250,19 @@ void main() {
   testWidgets('Popover alignment left-top', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Overlay(
-          initialEntries: [
-            OverlayEntry(
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Popover(
-                      context,
-                      alignment: PopoverAlignment.leftTop,
-                      action: const Text('Open Popover'),
-                      content: const Text('Popover Content'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
+        home: PopoverOverlay(
+          builder: (context) {
+            return Scaffold(
+              body: Center(
+                child: Popover(
+                  context,
+                  alignment: PopoverAlignment.leftTop,
+                  action: const Text('Open Popover'),
+                  content: const Text('Popover Content'),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -317,23 +279,19 @@ void main() {
   testWidgets('Popover alignment left-center', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Overlay(
-          initialEntries: [
-            OverlayEntry(
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Popover(
-                      context,
-                      alignment: PopoverAlignment.leftCenter,
-                      action: const Text('Open Popover'),
-                      content: const Text('Popover Content'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
+        home: PopoverOverlay(
+          builder: (context) {
+            return Scaffold(
+              body: Center(
+                child: Popover(
+                  context,
+                  alignment: PopoverAlignment.leftCenter,
+                  action: const Text('Open Popover'),
+                  content: const Text('Popover Content'),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -350,23 +308,19 @@ void main() {
   testWidgets('Popover alignment left-bottom', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Overlay(
-          initialEntries: [
-            OverlayEntry(
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Popover(
-                      context,
-                      alignment: PopoverAlignment.leftBottom,
-                      action: const Text('Open Popover'),
-                      content: const Text('Popover Content'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
+        home: PopoverOverlay(
+          builder: (context) {
+            return Scaffold(
+              body: Center(
+                child: Popover(
+                  context,
+                  alignment: PopoverAlignment.leftBottom,
+                  action: const Text('Open Popover'),
+                  content: const Text('Popover Content'),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -383,23 +337,19 @@ void main() {
   testWidgets('Popover alignment right-top', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Overlay(
-          initialEntries: [
-            OverlayEntry(
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Popover(
-                      context,
-                      alignment: PopoverAlignment.rightTop,
-                      action: const Text('Open Popover'),
-                      content: const Text('Popover Content'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
+        home: PopoverOverlay(
+          builder: (context) {
+            return Scaffold(
+              body: Center(
+                child: Popover(
+                  context,
+                  alignment: PopoverAlignment.rightTop,
+                  action: const Text('Open Popover'),
+                  content: const Text('Popover Content'),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -416,23 +366,19 @@ void main() {
   testWidgets('Popover alignment right-center', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Overlay(
-          initialEntries: [
-            OverlayEntry(
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Popover(
-                      context,
-                      alignment: PopoverAlignment.rightCenter,
-                      action: const Text('Open Popover'),
-                      content: const Text('Popover Content'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
+        home: PopoverOverlay(
+          builder: (context) {
+            return Scaffold(
+              body: Center(
+                child: Popover(
+                  context,
+                  alignment: PopoverAlignment.rightCenter,
+                  action: const Text('Open Popover'),
+                  content: const Text('Popover Content'),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -449,23 +395,19 @@ void main() {
   testWidgets('Popover alignment right-bottom', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Overlay(
-          initialEntries: [
-            OverlayEntry(
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Popover(
-                      context,
-                      alignment: PopoverAlignment.rightBottom,
-                      action: const Text('Open Popover'),
-                      content: const Text('Popover Content'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
+        home: PopoverOverlay(
+          builder: (context) {
+            return Scaffold(
+              body: Center(
+                child: Popover(
+                  context,
+                  alignment: PopoverAlignment.rightBottom,
+                  action: const Text('Open Popover'),
+                  content: const Text('Popover Content'),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

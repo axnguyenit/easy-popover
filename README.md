@@ -62,21 +62,15 @@ flutter pub add easy_popover
 ## Examples
 
 **Note: Wrapping Your App with Overlay for `Popover` Widget**
-- To utilize the `Popover` widget in your Flutter application, it is essential to wrap your app with an `Overlay`. The `Overlay` widget allows the `Popover` widget to be inserted and displayed correctly on top of other widgets. Below is an example of how to wrap your app with an `Overlay`:
+- To utilize the `Popover` widget in your Flutter application, it is essential to wrap your app with an `PopoverOverlay`. The `PopoverOverlay` widget allows the `Popover` widget to be inserted and displayed correctly on top of other widgets. Below is an example of how to wrap your app with an `PopoverOverlay`:
 ```dart
 @override
 Widget build(BuildContext context) {
-  return MaterialApp(
+  return const MaterialApp(
     debugShowCheckedModeBanner: false,
     title: 'Easy Popover Example',
-    home: Overlay(
-      initialEntries: [
-        OverlayEntry(
-          builder: (context) {
-            return const PopoverExampleScreen();
-          },
-        ),
-      ],
+    home: PopoverOverlay(
+      child: PopoverExampleScreen(),
     ),
   );
 }

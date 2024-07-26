@@ -6,6 +6,7 @@ import '../measure_size/measure_size.dart';
 import 'rounded_triangle_painter.dart';
 
 part 'popover_alignment.dart';
+
 part 'popover_controller.dart';
 
 /// A Popover can be used to display some content on top of another.
@@ -73,6 +74,11 @@ class Popover extends StatefulWidget {
   /// If not provided, it defaults to transparent.
   final Color? overlayColor;
 
+  /// The padding value for the sides of the screen to be used when content
+  /// overflows horizontally.
+  /// This value must be greater than or equal to zero.
+  final double horizontalPadding;
+
   /// Constructs a [Popover] widget.
   const Popover(
     this.context, {
@@ -92,9 +98,12 @@ class Popover extends StatefulWidget {
     this.hideArrow = false,
     this.spacing = 0.0,
     this.overlayColor,
+    this.horizontalPadding = 16.0,
   })  : assert(spacing >= 0.0, 'spacing must be greater than or equal to 0.0'),
         assert(
-            arrowSize >= 0.0, 'arrowSize must be greater than or equal to 0.0');
+            arrowSize >= 0.0, 'arrowSize must be greater than or equal to 0.0'),
+        assert(horizontalPadding >= 0,
+            'Padding value must be greater than or equal to zero.');
 
   @override
   State<Popover> createState() => _PopoverState();
@@ -159,8 +168,14 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
 
   PopoverController get _controller => widget.controller ?? _popoverController!;
 
-  double get _contentWidth =>
-      widget.applyActionWidth ? _actionSize.width : widget.contentWidth;
+  double get _contentWidth {
+    final size = MediaQuery.sizeOf(widget.context);
+    return widget.applyActionWidth
+        ? _actionSize.width
+        : widget.contentWidth > size.width
+            ? size.width - widget.horizontalPadding * 2
+            : widget.contentWidth;
+  }
 
   void _configureConstraints() {
     final renderBox =
@@ -173,7 +188,7 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
     final rightSpacing = size.width - leftSpacing - _actionSize.width;
     final bottomSpacing = size.height - topSpacing - _actionSize.height;
     _popoverAlignment = widget.alignment.findBestPopoverPosition(
-      contentSize: _contentSizeListener.value,
+      contentSize: Size(_contentWidth, _contentSizeListener.value.height),
       leftSpacing: leftSpacing,
       topSpacing: topSpacing,
       rightSpacing: rightSpacing,
