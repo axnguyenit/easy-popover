@@ -66,6 +66,11 @@ class _PopoverExampleScreenState extends State<PopoverExampleScreen> {
                         width: width < 900 ? width : width * 0.5 - spacing * 2,
                         child: const Column(
                           children: [
+                            BasicIconButtonPopover(),
+                            SizedBox(
+                              height: spacing,
+                              width: spacing,
+                            ),
                             BasicPopover(),
                             SizedBox(
                               height: spacing,
@@ -108,6 +113,69 @@ class _PopoverExampleScreenState extends State<PopoverExampleScreen> {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+// ════════════════════════════════════════════
+// IconButton
+// ════════════════════════════════════════════
+
+class HoverColorWidget extends StatefulWidget {
+  final Widget child;
+
+  const HoverColorWidget({super.key, required this.child});
+
+  @override
+  State<HoverColorWidget> createState() => _HoverColorWidgetState();
+}
+
+class _HoverColorWidgetState extends State<HoverColorWidget> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => _onHover(true),
+      onExit: (_) => _onHover(false),
+      cursor: SystemMouseCursors.click,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(100),
+        child: SizedBox(
+          width: 32,
+          height: 32,
+          child: ColoredBox(
+            color: _isHovered ? Colors.grey.shade300 : Colors.transparent,
+            child: widget.child,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _onHover(bool isHovered) {
+    setState(() {
+      _isHovered = isHovered;
+    });
+  }
+}
+
+class BasicIconButtonPopover extends StatelessWidget {
+  const BasicIconButtonPopover({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Block(
+      title: 'Basic Icon',
+      child: Center(
+        child: Popover(
+          context,
+          action: const HoverColorWidget(
+            child: Icon(Icons.more_vert_rounded),
+          ),
+          content: const PopoverContent(),
         ),
       ),
     );

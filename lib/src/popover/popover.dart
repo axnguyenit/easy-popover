@@ -352,16 +352,14 @@ class _PopoverState extends State<Popover> with SingleTickerProviderStateMixin {
           _controller.close();
         }
       },
-      child: Material(
-        child: MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: GestureDetector(
-            key: _actionKey,
-            onTap: _controller.toggle,
-            child: CompositedTransformTarget(
-              link: _layerLink,
-              child: widget.action,
-            ),
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          key: _actionKey,
+          onTap: _controller.toggle,
+          child: CompositedTransformTarget(
+            link: _layerLink,
+            child: widget.action,
           ),
         ),
       ),
