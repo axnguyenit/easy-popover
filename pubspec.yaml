@@ -1,6 +1,6 @@
 name: easy_popover
 description: "A Popover can be used to display some content on top of another."
-version: 0.0.5
+version: 0.0.6
 homepage: https://github.com/axnguyenit/easy-popover
 
 environment:

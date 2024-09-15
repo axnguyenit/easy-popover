@@ -1,3 +1,6 @@
+## 0.0.6
+- Remove Action Background Color
+
 ## 0.0.5
 - OverlayEntry packaging
 - Resolve content overflow
